@@ -1,6 +1,6 @@
 using RacketManagement.Models;
-using System;
-using System.Linq;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace RacketManagement.Data
 {
@@ -41,9 +41,46 @@ namespace RacketManagement.Data
         new Brand{name="Wilson"},
         new Brand{name="Babolat"},
       };
-      foreach(Brand b in brands) {
-        context.Brands.Add(b);
+      context.Brands.AddRange(brands);
+
+      var roles = new IdentityRole[]
+      {
+        new IdentityRole{Id="1", Name="Administrator"},
+        new IdentityRole{Id="2", Name="Manager"},
+        new IdentityRole{Id="3", Name="Staff"}
+      };
+      context.Roles.AddRange(roles);
+
+      var user = new ApplicationUser
+      {
+        FirstName = "Bob",
+        LastName = "Dilon",
+        City = "Ljubljana",
+        Email = "bob@example.com",
+        NormalizedEmail = "XXXX@EXAMPLE.COM",
+        UserName = "bob@example.com",
+        NormalizedUserName = "bob@example.com",
+        PhoneNumber = "+111111111111",
+        EmailConfirmed = true,
+        PhoneNumberConfirmed = true,
+        SecurityStamp = Guid.NewGuid().ToString("D")
+      };
+
+      if (!context.Users.Any(u => u.UserName == user.UserName))
+      {
+        var password = new PasswordHasher<ApplicationUser>();
+        var hashed = password.HashPassword(user,"Testni123!");
+        user.PasswordHash = hashed;
+        context.Users.Add(user);
       }
+
+      var UserRoles = new IdentityUserRole<string>[]
+      {
+        new IdentityUserRole<string>{RoleId = roles[0].Id, UserId=user.Id},
+        new IdentityUserRole<string>{RoleId = roles[1].Id, UserId=user.Id},
+      };
+      context.UserRoles.AddRange(UserRoles);
+      
       context.SaveChanges();
     }
   }
