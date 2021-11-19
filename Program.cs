@@ -1,14 +1,22 @@
 using RacketManagement.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using RacketManagement.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddDbContext<RacketManagementContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("RacketManagementContext")));
+var connectionString = builder.Configuration.GetConnectionString("RacketManagementContext");
 
+// Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<RacketManagementContext>();
+
+
+builder.Services.AddDbContext<RacketManagementContext>(options =>
+    options.UseSqlServer(connectionString));
 
 var app = builder.Build();
 
@@ -26,8 +34,11 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.MapRazorPages();
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapControllers();
 
 app.MapControllerRoute(
     name: "default",

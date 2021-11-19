@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using RacketManagement.Data;
 using RacketManagement.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RacketManagement.Controllers
 {
+    [Authorize]
     public class RacketController : Controller
     {
         private readonly RacketManagementContext _context;
