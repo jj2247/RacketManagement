@@ -24,7 +24,8 @@ namespace RacketManagement.Controllers
         // GET: Racket
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Rackets.ToListAsync());
+            var racketManagementContext = _context.Rackets.Include(r => r.Brand).Include(r => r.GripSize).Include(r => r.Model);
+            return View(await racketManagementContext.ToListAsync());
         }
 
         // GET: Racket/Details/5
@@ -36,6 +37,9 @@ namespace RacketManagement.Controllers
             }
 
             var racket = await _context.Rackets
+                .Include(r => r.Brand)
+                .Include(r => r.GripSize)
+                .Include(r => r.Model)
                 .FirstOrDefaultAsync(m => m.RacketID == id);
             if (racket == null)
             {
@@ -48,6 +52,9 @@ namespace RacketManagement.Controllers
         // GET: Racket/Create
         public IActionResult Create()
         {
+            ViewData["BrandID"] = new SelectList(_context.Brands, "BrandID", "BrandID");
+            ViewData["GripSizeID"] = new SelectList(_context.GripSizes, "GripSizeID", "GripSizeID");
+            ViewData["ModelID"] = new SelectList(_context.Models, "ModelID", "ModelID");
             return View();
         }
 
@@ -56,7 +63,7 @@ namespace RacketManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RacketID,name")] Racket racket)
+        public async Task<IActionResult> Create([Bind("RacketID,BrandID,GripSizeID,ModelID")] Racket racket)
         {
             if (ModelState.IsValid)
             {
@@ -64,6 +71,9 @@ namespace RacketManagement.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["BrandID"] = new SelectList(_context.Brands, "BrandID", "BrandID", racket.BrandID);
+            ViewData["GripSizeID"] = new SelectList(_context.GripSizes, "GripSizeID", "GripSizeID", racket.GripSizeID);
+            ViewData["ModelID"] = new SelectList(_context.Models, "ModelID", "ModelID", racket.ModelID);
             return View(racket);
         }
 
@@ -80,6 +90,9 @@ namespace RacketManagement.Controllers
             {
                 return NotFound();
             }
+            ViewData["BrandID"] = new SelectList(_context.Brands, "BrandID", "BrandID", racket.BrandID);
+            ViewData["GripSizeID"] = new SelectList(_context.GripSizes, "GripSizeID", "GripSizeID", racket.GripSizeID);
+            ViewData["ModelID"] = new SelectList(_context.Models, "ModelID", "ModelID", racket.ModelID);
             return View(racket);
         }
 
@@ -88,7 +101,7 @@ namespace RacketManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RacketID,name")] Racket racket)
+        public async Task<IActionResult> Edit(int id, [Bind("RacketID,BrandID,GripSizeID,ModelID")] Racket racket)
         {
             if (id != racket.RacketID)
             {
@@ -115,6 +128,9 @@ namespace RacketManagement.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["BrandID"] = new SelectList(_context.Brands, "BrandID", "BrandID", racket.BrandID);
+            ViewData["GripSizeID"] = new SelectList(_context.GripSizes, "GripSizeID", "GripSizeID", racket.GripSizeID);
+            ViewData["ModelID"] = new SelectList(_context.Models, "ModelID", "ModelID", racket.ModelID);
             return View(racket);
         }
 
@@ -127,6 +143,9 @@ namespace RacketManagement.Controllers
             }
 
             var racket = await _context.Rackets
+                .Include(r => r.Brand)
+                .Include(r => r.GripSize)
+                .Include(r => r.Model)
                 .FirstOrDefaultAsync(m => m.RacketID == id);
             if (racket == null)
             {

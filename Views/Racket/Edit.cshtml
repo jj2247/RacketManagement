@@ -14,9 +14,19 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="RacketID" />
             <div class="form-group">
-                <label asp-for="name" class="control-label"></label>
-                <input asp-for="name" class="form-control" />
-                <span asp-validation-for="name" class="text-danger"></span>
+                <label asp-for="BrandID" class="control-label"></label>
+                <select asp-for="BrandID" class="form-control" asp-items="ViewBag.BrandID"></select>
+                <span asp-validation-for="BrandID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GripSizeID" class="control-label"></label>
+                <select asp-for="GripSizeID" class="form-control" asp-items="ViewBag.GripSizeID"></select>
+                <span asp-validation-for="GripSizeID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ModelID" class="control-label"></label>
+                <select asp-for="ModelID" class="form-control" asp-items="ViewBag.ModelID"></select>
+                <span asp-validation-for="ModelID" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

@@ -12,11 +12,15 @@ namespace RacketManagement.Data
 
     public DbSet<Racket> Rackets { get; set; }
     public DbSet<Brand> Brands { get; set; }
+    public DbSet<Model> Models { get; set; }
+    public DbSet<GripSize> GripSizes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-      modelBuilder.Entity<Racket>().ToTable("Racket");
       modelBuilder.Entity<Brand>().ToTable("Brand");
+      modelBuilder.Entity<Model>().ToTable("Model");
+      modelBuilder.Entity<GripSize>().ToTable("GripSize");
+      modelBuilder.Entity<Racket>().ToTable("Racket");
       base.OnModelCreating(modelBuilder);
     }
   }

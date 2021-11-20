@@ -19,21 +19,6 @@ namespace RacketManagement.Data
         return;
       }
 
-      var rackets = new Racket[]
-      {
-        new Racket{name="Tecnifibre T-Fight 305 G1"},
-        new Racket{name="Tecnifibre T-Fight 305 G2"},
-        new Racket{name="Tecnifibre T-Fight 305 G3"},
-        new Racket{name="Tecnifibre T-Fight 305 G4"},
-        new Racket{name="Tecnifibre T-Fight 315 G1"},
-        new Racket{name="Tecnifibre T-Fight 315 G2"},
-      };
-      foreach (Racket r in rackets)
-      {
-        context.Rackets.Add(r);
-      }
-      context.SaveChanges();
-
       var brands = new Brand[]
       {
         new Brand{name="Tecnifibre"},
@@ -42,6 +27,33 @@ namespace RacketManagement.Data
         new Brand{name="Babolat"},
       };
       context.Brands.AddRange(brands);
+
+      var models = new Model[]
+      {
+        new Model{name="T-Fight 305"},
+        new Model{name="T-Fight 315"},
+        new Model{name="T-Fight 295"},
+        new Model{name="T-Fight 285"},
+        new Model{name="T-Fight 270"},
+      };
+      context.Models.AddRange(models);
+
+      var gripsizes = new GripSize[]
+      {
+        new GripSize{size="L1"},
+        new GripSize{size="L2"},
+        new GripSize{size="L3"},
+        new GripSize{size="L4"}
+      };
+      context.GripSizes.AddRange(gripsizes);
+
+      var rackets = new Racket[]
+      {
+        new Racket{BrandID=1, GripSizeID=1, ModelID=3},
+        new Racket{BrandID=3, GripSizeID=2, ModelID=1},
+        new Racket{BrandID=2, GripSizeID=3, ModelID=2},
+      };
+      context.Rackets.AddRange(rackets);
 
       var roles = new IdentityRole[]
       {
