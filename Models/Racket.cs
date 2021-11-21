@@ -1,8 +1,11 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace RacketManagement.Models
 {
   public class Racket
   {
     public int RacketID { get; set; }
+    [ForeignKey("Brand")]
     public int BrandID { get; set; }
     public int GripSizeID { get; set; }
     public int ModelID { get; set; }

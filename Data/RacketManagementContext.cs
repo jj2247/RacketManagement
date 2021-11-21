@@ -14,6 +14,7 @@ namespace RacketManagement.Data
     public DbSet<Brand> Brands { get; set; }
     public DbSet<Model> Models { get; set; }
     public DbSet<GripSize> GripSizes { get; set; }
+    public DbSet<Loan> Loans { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -21,6 +22,7 @@ namespace RacketManagement.Data
       modelBuilder.Entity<Model>().ToTable("Model");
       modelBuilder.Entity<GripSize>().ToTable("GripSize");
       modelBuilder.Entity<Racket>().ToTable("Racket");
+      modelBuilder.Entity<Loan>().ToTable("Loan");
       base.OnModelCreating(modelBuilder);
     }
   }

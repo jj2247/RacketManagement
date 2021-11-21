@@ -86,6 +86,14 @@ namespace RacketManagement.Data
         context.Users.Add(user);
       }
 
+      var loans = new Loan[]
+      {
+        new Loan{UserId=user.Id, RacketID=1},
+        new Loan{UserId=user.Id, RacketID=2},
+        new Loan{UserId=user.Id, RacketID=3},
+      };
+      context.Loans.AddRange(loans);
+
       var UserRoles = new IdentityUserRole<string>[]
       {
         new IdentityUserRole<string>{RoleId = roles[0].Id, UserId=user.Id},
