@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace RacketManagement.Controllers
 {
-    [Authorize]
     public class RacketController : Controller
     {
         private readonly RacketManagementContext _context;
@@ -62,8 +61,7 @@ namespace RacketManagement.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RacketID,BrandID,GripSizeID,ModelID")] Racket racket)
+        public async Task<IActionResult> Create([Bind("BrandID,GripSizeID,ModelID")] Racket racket)
         {
             if (ModelState.IsValid)
             {
@@ -74,6 +72,12 @@ namespace RacketManagement.Controllers
             ViewData["BrandID"] = new SelectList(_context.Brands, "BrandID", "BrandID", racket.BrandID);
             ViewData["GripSizeID"] = new SelectList(_context.GripSizes, "GripSizeID", "GripSizeID", racket.GripSizeID);
             ViewData["ModelID"] = new SelectList(_context.Models, "ModelID", "ModelID", racket.ModelID);
+            Console.WriteLine("deladnasjkdkasd");
+            Console.WriteLine("deladnasjkdkasd");
+            Console.WriteLine("deladnasjkdkasd");
+            Console.WriteLine("deladnasjkdkasd");
+            Console.WriteLine("deladnasjkdkasd");
+            Console.WriteLine("deladnasjkdkasd");
             return View(racket);
         }
 
@@ -100,7 +104,6 @@ namespace RacketManagement.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("RacketID,BrandID,GripSizeID,ModelID")] Racket racket)
         {
             if (id != racket.RacketID)
@@ -157,7 +160,6 @@ namespace RacketManagement.Controllers
 
         // POST: Racket/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var racket = await _context.Rackets.FindAsync(id);

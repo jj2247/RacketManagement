@@ -58,8 +58,7 @@ namespace RacketManagement.Data
       var roles = new IdentityRole[]
       {
         new IdentityRole{Id="1", Name="Administrator"},
-        new IdentityRole{Id="2", Name="Manager"},
-        new IdentityRole{Id="3", Name="Staff"}
+        new IdentityRole{Id="2", Name="Customer"}
       };
       context.Roles.AddRange(roles);
 
@@ -78,12 +77,35 @@ namespace RacketManagement.Data
         SecurityStamp = Guid.NewGuid().ToString("D")
       };
 
+      var user2 = new ApplicationUser
+      {
+        FirstName = "John",
+        LastName = "Doe",
+        City = "Ljubljana",
+        Email = "john@example.com",
+        NormalizedEmail = "XXXX@EXAMPLE.COM",
+        UserName = "john@example.com",
+        NormalizedUserName = "john@example.com",
+        PhoneNumber = "+222222222222",
+        EmailConfirmed = true,
+        PhoneNumberConfirmed = true,
+        SecurityStamp = Guid.NewGuid().ToString("D")
+      };
+
       if (!context.Users.Any(u => u.UserName == user.UserName))
       {
         var password = new PasswordHasher<ApplicationUser>();
         var hashed = password.HashPassword(user,"Testni123!");
         user.PasswordHash = hashed;
         context.Users.Add(user);
+      }
+
+      if (!context.Users.Any(u => u.UserName == user.UserName))
+      {
+        var password = new PasswordHasher<ApplicationUser>();
+        var hashed = password.HashPassword(user2,"Testni123!");
+        user2.PasswordHash = hashed;
+        context.Users.Add(user2);
       }
 
       var loans = new Loan[]

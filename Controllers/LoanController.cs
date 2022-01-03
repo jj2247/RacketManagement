@@ -58,7 +58,6 @@ namespace RacketManagement.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("LoanID,UserId,RacketID")] Loan loan)
         {
             if (ModelState.IsValid)
@@ -69,6 +68,12 @@ namespace RacketManagement.Controllers
             }
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", loan.UserId);
             ViewData["RacketID"] = new SelectList(_context.Rackets, "RacketID", "RacketID", loan.RacketID);
+            Console.WriteLine("deladnasjkdkasd");
+            Console.WriteLine("deladnasjkdkasd");
+            Console.WriteLine("deladnasjkdkasd");
+            Console.WriteLine("deladnasjkdkasd");
+            Console.WriteLine("deladnasjkdkasd");
+            Console.WriteLine("deladnasjkdkasd");
             return View(loan);
         }
 
@@ -94,7 +99,6 @@ namespace RacketManagement.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("LoanID,UserId,RacketID")] Loan loan)
         {
             if (id != loan.LoanID)
@@ -149,7 +153,6 @@ namespace RacketManagement.Controllers
 
         // POST: Loan/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var loan = await _context.Loans.FindAsync(id);
