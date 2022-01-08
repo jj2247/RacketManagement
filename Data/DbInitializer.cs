@@ -31,15 +31,13 @@ namespace RacketManagement.Data
       var models = new Model[]
       {
         new Model{name="T-Fight 305"},
-        new Model{name="T-Fight 315"},
-        new Model{name="T-Fight 295"},
-        new Model{name="T-Fight 285"},
-        new Model{name="T-Fight 270"},
+        new Model{name="T-Fight 315"}
       };
       context.Models.AddRange(models);
 
       var gripsizes = new GripSize[]
       {
+        new GripSize{size="L0"},
         new GripSize{size="L1"},
         new GripSize{size="L2"},
         new GripSize{size="L3"},
@@ -49,7 +47,7 @@ namespace RacketManagement.Data
 
       var rackets = new Racket[]
       {
-        new Racket{BrandID=1, GripSizeID=1, ModelID=3},
+        new Racket{BrandID=1, GripSizeID=1, ModelID=2},
         new Racket{BrandID=3, GripSizeID=2, ModelID=1},
         new Racket{BrandID=2, GripSizeID=3, ModelID=2},
       };
@@ -57,20 +55,20 @@ namespace RacketManagement.Data
 
       var roles = new IdentityRole[]
       {
-        new IdentityRole{Id="1", Name="Administrator"},
-        new IdentityRole{Id="2", Name="Customer"}
+        new IdentityRole{Id="1", Name="Administrator", NormalizedName="Administrator"},
+        new IdentityRole{Id="2", Name="Customer", NormalizedName="Customer"}
       };
       context.Roles.AddRange(roles);
 
       var user = new ApplicationUser
       {
-        FirstName = "Bob",
-        LastName = "Dilon",
-        City = "Ljubljana",
-        Email = "bob@example.com",
+        FirstName = "First",
+        LastName = "Last",
+        //City = "Ljubljana",
+        Email = "admin@admin.com",
         NormalizedEmail = "XXXX@EXAMPLE.COM",
-        UserName = "bob@example.com",
-        NormalizedUserName = "bob@example.com",
+        UserName = "admin@admin.com",
+        NormalizedUserName = "admin@admin.com",
         PhoneNumber = "+111111111111",
         EmailConfirmed = true,
         PhoneNumberConfirmed = true,
@@ -81,11 +79,11 @@ namespace RacketManagement.Data
       {
         FirstName = "John",
         LastName = "Doe",
-        City = "Ljubljana",
-        Email = "john@example.com",
+        //City = "Ljubljana",
+        Email = "bob@example.com",
         NormalizedEmail = "XXXX@EXAMPLE.COM",
-        UserName = "john@example.com",
-        NormalizedUserName = "john@example.com",
+        UserName = "bob@example.com",
+        NormalizedUserName = "bob@example.com",
         PhoneNumber = "+222222222222",
         EmailConfirmed = true,
         PhoneNumberConfirmed = true,
@@ -110,16 +108,15 @@ namespace RacketManagement.Data
 
       var loans = new Loan[]
       {
-        new Loan{UserId=user.Id, RacketID=1},
-        new Loan{UserId=user.Id, RacketID=2},
-        new Loan{UserId=user.Id, RacketID=3},
+        new Loan{UserId=user.Id, RacketID=1, ReturnDate=DateTime.Now.AddDays(14)},
+        new Loan{UserId=user.Id, RacketID=2, ReturnDate=DateTime.Now.AddDays(14)},
       };
       context.Loans.AddRange(loans);
 
       var UserRoles = new IdentityUserRole<string>[]
       {
         new IdentityUserRole<string>{RoleId = roles[0].Id, UserId=user.Id},
-        new IdentityUserRole<string>{RoleId = roles[1].Id, UserId=user.Id},
+        new IdentityUserRole<string>{RoleId = roles[1].Id, UserId=user2.Id},
       };
       context.UserRoles.AddRange(UserRoles);
       

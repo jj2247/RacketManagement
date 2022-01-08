@@ -12,48 +12,54 @@ namespace RacketManagement.Controllers.api
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RacketController : ControllerBase
+    public class LoanController : ControllerBase
     {
         private readonly RacketManagementContext _context;
 
-        public RacketController(RacketManagementContext context)
+        public LoanController(RacketManagementContext context)
         {
             _context = context;
         }
 
-        // GET: api/Racket
+        // GET: api/Loan
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Racket>>> GetRackets()
+        public async Task<ActionResult<IEnumerable<Loan>>> GetLoans()
         {
-            var rackets = _context.Rackets.Include(r => r.Brand).Include(r => r.GripSize).Include(r => r.Model);
-            return await rackets.ToListAsync();
+            var loans = _context.Loans
+                .Include(l => l.Racket)
+                .Include(l => l.Racket.Brand)
+                .Include(l => l.Racket.Model)
+                .Include(l => l.Racket.GripSize)
+                .Include(l => l.ApplicationUser);
+
+            return await loans.ToListAsync();
         }
 
-        // GET: api/Racket/5
+        // GET: api/Loan/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Racket>> GetRacket(int id)
+        public async Task<ActionResult<Loan>> GetLoan(int id)
         {
-            var racket = await _context.Rackets.FindAsync(id);
+            var loan = await _context.Loans.FindAsync(id);
 
-            if (racket == null)
+            if (loan == null)
             {
                 return NotFound();
             }
 
-            return racket;
+            return loan;
         }
 
-        // PUT: api/Racket/5
+        // PUT: api/Loan/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutRacket(int id, Racket racket)
+        public async Task<IActionResult> PutLoan(int id, Loan loan)
         {
-            if (id != racket.RacketID)
+            if (id != loan.LoanID)
             {
                 return BadRequest();
             }
 
-            _context.Entry(racket).State = EntityState.Modified;
+            _context.Entry(loan).State = EntityState.Modified;
 
             try
             {
@@ -61,7 +67,7 @@ namespace RacketManagement.Controllers.api
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!RacketExists(id))
+                if (!LoanExists(id))
                 {
                     return NotFound();
                 }
@@ -74,36 +80,36 @@ namespace RacketManagement.Controllers.api
             return NoContent();
         }
 
-        // POST: api/Racket
+        // POST: api/Loan
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Racket>> PostRacket(Racket racket)
+        public async Task<ActionResult<Loan>> PostLoan(Loan loan)
         {
-            _context.Rackets.Add(racket);
+            _context.Loans.Add(loan);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetRacket", new { id = racket.RacketID }, racket);
+            return CreatedAtAction("GetLoan", new { id = loan.LoanID }, loan);
         }
 
-        // DELETE: api/Racket/5
+        // DELETE: api/Loan/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteRacket(int id)
+        public async Task<IActionResult> DeleteLoan(int id)
         {
-            var racket = await _context.Rackets.FindAsync(id);
-            if (racket == null)
+            var loan = await _context.Loans.FindAsync(id);
+            if (loan == null)
             {
                 return NotFound();
             }
 
-            _context.Rackets.Remove(racket);
+            _context.Loans.Remove(loan);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool RacketExists(int id)
+        private bool LoanExists(int id)
         {
-            return _context.Rackets.Any(e => e.RacketID == id);
+            return _context.Loans.Any(e => e.LoanID == id);
         }
     }
 }

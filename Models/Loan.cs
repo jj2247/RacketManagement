@@ -9,6 +9,7 @@ namespace RacketManagement.Models
     [ForeignKey("ApplicationUser")]
     public string UserId { get; set; }
     public int RacketID { get; set; }
+    public DateTime ReturnDate { get; set; }
     public ApplicationUser ApplicationUser { get; set; }
     public Racket Racket { get; set; }
   }
