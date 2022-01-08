@@ -75,6 +75,20 @@ namespace RacketManagement.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
+
+            [Required]
+            [Display(Name = "First name")]
+            public string FirstName { get; set; }
+
+            [Required]
+            [Display(Name = "Last name")]
+            public string LastName { get; set; }
+
+            [Required(ErrorMessage = "You must provide a phone number")]
+            [Display(Name = "Phone number")]
+            [DataType(DataType.PhoneNumber)]
+            public string PhoneNumber { get; set; }
+
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
@@ -114,6 +128,12 @@ namespace RacketManagement.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+                user.PhoneNumber = Input.PhoneNumber;
+                user.FirstName = Input.FirstName;
+                user.LastName = Input.LastName;
+                user.EmailConfirmed = true;
+                user.PhoneNumberConfirmed = true;
+                user.SecurityStamp = Guid.NewGuid().ToString("D");
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -125,6 +145,9 @@ namespace RacketManagement.Areas.Identity.Pages.Account
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                    await _userManager.AddToRoleAsync(user, "Customer");
+
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",

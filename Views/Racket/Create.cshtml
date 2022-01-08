@@ -4,34 +4,56 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Racket</h1>
 
-<h4>Racket</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="BrandID" class="control-label"></label>
-                <select asp-for="BrandID" class ="form-control" asp-items="ViewBag.BrandID"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="GripSizeID" class="control-label"></label>
-                <select asp-for="GripSizeID" class ="form-control" asp-items="ViewBag.GripSizeID"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="ModelID" class="control-label"></label>
-                <select asp-for="ModelID" class ="form-control" asp-items="ViewBag.ModelID"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+
+<form asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <table class="table">
+        <tbody>
+            <tr>
+                <td class="col-md-2">
+                    <div class="form-group">
+                        <select asp-for="BrandID" class ="form-control" asp-items="ViewBag.BrandName"></select>
+                    </div>
+                </td>
+                <td class="col-md-8"></td>
+                <td class="col-md-2">
+                    <button type="button" class="btn btn-secondary">
+                        <a class="text-light" style="text-decoration: none"  asp-controller="Brand" asp-action="Create">New Brand</a>
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-2">
+                    <div class="form-group">
+                        <select asp-for="ModelID" class ="form-control" asp-items="ViewBag.ModelName"></select>
+                    </div>
+                </td>
+                <td class="col-md-8"></td>
+                <td class="col-md-2">
+                    <button type="button" class="btn btn-secondary">
+                        <a class="text-light" style="text-decoration: none"  asp-controller="Model" asp-action="Create">New Model</a>
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-2">
+                    <div class="form-group">
+                        <select asp-for="GripSizeID" class ="form-control" asp-items="ViewBag.Gripsize"></select>
+                    </div>
+                </td>
+                <td class="col-md-8"></td>
+                <td class="col-md-2">
+                    <button type="button" class="btn btn-secondary">
+                        <a class="text-light" style="text-decoration: none"  asp-controller="GripSize" asp-action="Create">New Gripsize</a>
+                    </button>
+                </td>
+            </tr>                
+        </tbody>
+    </table>
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
+</form>

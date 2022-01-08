@@ -24,6 +24,15 @@ namespace RacketManagement.Controllers
         public async Task<IActionResult> Index()
         {
             var racketManagementContext = _context.Rackets.Include(r => r.Brand).Include(r => r.GripSize).Include(r => r.Model);
+            if(User.Identity.IsAuthenticated)
+            {
+                if(!User.IsInRole("Administrator"))
+                {
+                    var listOfRacketIds = _context.Loans.Select(r => r.RacketID);
+                    return View(await _context.Rackets.Include(r => r.Brand).Include(r => r.GripSize).Include(r => r.Model).Where(r => !listOfRacketIds.Contains(r.RacketID)).ToListAsync());
+                }
+            }
+            
             return View(await racketManagementContext.ToListAsync());
         }
 
@@ -49,11 +58,16 @@ namespace RacketManagement.Controllers
         }
 
         // GET: Racket/Create
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
             ViewData["BrandID"] = new SelectList(_context.Brands, "BrandID", "BrandID");
             ViewData["GripSizeID"] = new SelectList(_context.GripSizes, "GripSizeID", "GripSizeID");
             ViewData["ModelID"] = new SelectList(_context.Models, "ModelID", "ModelID");
+
+            ViewData["BrandName"] = new SelectList(_context.Brands, "BrandID", "name");
+            ViewData["ModelName"] = new SelectList(_context.Models, "ModelID", "name");
+            ViewData["Gripsize"] = new SelectList(_context.GripSizes, "GripSizeID", "size");
             return View();
         }
 
@@ -61,24 +75,13 @@ namespace RacketManagement.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("BrandID,GripSizeID,ModelID")] Racket racket)
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> Create([Bind("RacketID,BrandID,GripSizeID,ModelID")] Racket racket)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(racket);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["BrandID"] = new SelectList(_context.Brands, "BrandID", "BrandID", racket.BrandID);
-            ViewData["GripSizeID"] = new SelectList(_context.GripSizes, "GripSizeID", "GripSizeID", racket.GripSizeID);
-            ViewData["ModelID"] = new SelectList(_context.Models, "ModelID", "ModelID", racket.ModelID);
-            Console.WriteLine("deladnasjkdkasd");
-            Console.WriteLine("deladnasjkdkasd");
-            Console.WriteLine("deladnasjkdkasd");
-            Console.WriteLine("deladnasjkdkasd");
-            Console.WriteLine("deladnasjkdkasd");
-            Console.WriteLine("deladnasjkdkasd");
-            return View(racket);
+            _context.Add(racket);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Racket/Edit/5
@@ -97,6 +100,10 @@ namespace RacketManagement.Controllers
             ViewData["BrandID"] = new SelectList(_context.Brands, "BrandID", "BrandID", racket.BrandID);
             ViewData["GripSizeID"] = new SelectList(_context.GripSizes, "GripSizeID", "GripSizeID", racket.GripSizeID);
             ViewData["ModelID"] = new SelectList(_context.Models, "ModelID", "ModelID", racket.ModelID);
+
+            ViewData["BrandName"] = new SelectList(_context.Brands, "BrandID", "name");
+            ViewData["ModelName"] = new SelectList(_context.Models, "ModelID", "name");
+            ViewData["Gripsize"] = new SelectList(_context.GripSizes, "GripSizeID", "size");
             return View(racket);
         }
 
@@ -104,6 +111,7 @@ namespace RacketManagement.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("RacketID,BrandID,GripSizeID,ModelID")] Racket racket)
         {
             if (id != racket.RacketID)
@@ -111,30 +119,29 @@ namespace RacketManagement.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+
+            try
             {
-                try
-                {
-                    _context.Update(racket);
+                _context.Update(racket);
                     await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!RacketExists(racket.RacketID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
             }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!RacketExists(racket.RacketID))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
+            /*
             ViewData["BrandID"] = new SelectList(_context.Brands, "BrandID", "BrandID", racket.BrandID);
             ViewData["GripSizeID"] = new SelectList(_context.GripSizes, "GripSizeID", "GripSizeID", racket.GripSizeID);
             ViewData["ModelID"] = new SelectList(_context.Models, "ModelID", "ModelID", racket.ModelID);
-            return View(racket);
+            return View(racket);*/
         }
 
         // GET: Racket/Delete/5
@@ -160,6 +167,7 @@ namespace RacketManagement.Controllers
 
         // POST: Racket/Delete/5
         [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var racket = await _context.Rackets.FindAsync(id);

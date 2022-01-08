@@ -1,42 +1,56 @@
 @model IEnumerable<RacketManagement.Models.Loan>
 
-
 @{
     ViewData["Title"] = "Loans";
 }
 
 <h1>Loans</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<button type="button" class="btn btn-primary">
+    <a asp-action="Create" class="text-light" style="text-decoration: none">Rezerviraj</a>
+</button>
+
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.UserId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Racket.Brand)
-            </th>
+            <th>User</th>
+            <th>Phone number</th>
+            <th>Racket</th>
+            <th>Return Date</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.ApplicationUser.FirstName)
+                @item.ApplicationUser.FirstName @item.ApplicationUser.LastName
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Racket.Brand.name)
+                @item.ApplicationUser.PhoneNumber
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.LoanID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.LoanID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.LoanID">Delete</a>
+                @item.Racket.Brand.name @item.Racket.Model.name @item.Racket.GripSize.size
             </td>
+            <td>
+                @(item.ReturnDate.Day).@(item.ReturnDate.Month).@(item.ReturnDate.Year)
+            </td>
+            @if (User.Identity.IsAuthenticated)
+            {
+                if(User.IsInRole("Administrator"))
+                {
+                    <td>
+                        <a class="text-light" style="text-decoration: none"  asp-action="Edit" asp-route-id="@item.LoanID">
+                            <button type="button" class="btn btn-secondary btn-sm">Edit</button>
+                        </a>
+                        
+                        <a class="text-light" style="text-decoration: none"  asp-action="Delete" asp-route-id="@item.LoanID">
+                            <button type="button" class="btn btn-secondary btn-sm">Delete</button>
+                        </a>
+                    </td>
+                }
+            }
         </tr>
-}
+    }
     </tbody>
 </table>

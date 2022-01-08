@@ -1,6 +1,7 @@
 using RacketManagement.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace RacketManagement.Data
 {

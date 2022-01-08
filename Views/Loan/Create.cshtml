@@ -4,30 +4,21 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Loan</h1>
 
-<h4>Loan</h4>
+<p>Racket is lent out for 14 days.</p>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
+            <div class="form-group" style="padding-bottom: 7px">
+                <label asp-for="RacketID" class="control-label">Racket</label>
+                <select asp-for="RacketID" class ="form-control" asp-items="ViewBag.RacketName"></select>
             </div>
             <div class="form-group">
-                <label asp-for="RacketID" class="control-label"></label>
-                <select asp-for="RacketID" class ="form-control" asp-items="ViewBag.RacketID"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Rezerviraj" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
