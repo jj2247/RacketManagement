@@ -5,8 +5,8 @@ using RacketManagement.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//var connectionString = builder.Configuration.GetConnectionString("RacketManagementContext");
-var connectionString = builder.Configuration.GetConnectionString("AzureRacketContext");
+var connectionString = builder.Configuration.GetConnectionString("RacketManagementContext");
+//ar connectionString = builder.Configuration.GetConnectionString("AzureRacketContext");
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
